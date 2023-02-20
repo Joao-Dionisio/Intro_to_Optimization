@@ -4,7 +4,7 @@ O material está incompleto. Para além do que refiro abaixo, falta uma revisão
 
 1. Convex Optimization: 80%. Faltam maioritariamente exercícios, mas não planeio que seja muito maior.
 2. Linear Programming: 90%. Tenho que rever a parte de complexidade algoritmica, e faltam as soluções da maior parte dos exercícios. 
-3. Complexity theory: 70%. Sendo um capítulo mais de curiosidade, faltam exercícios. Tenho que reestruturar algumas coisas.
+3. Complexity theory: 70%. Sendo um capítulo mais de curiosidade, faltam exercícios. Tenho que reestruturar algumas coisas e falar mais dos problemas NPc.
 4. Integer Programming: 55%. Faltam bastantes imagens, descrição mais detalhada das heurísticas e meta-heurísticas. Explicação de B&B precisa de ser melhorada.
 5. Decomposition Methods: 60%. Não vou passar demasiado tempo aqui, mas especialmente Benders e B&P precisam de ser expandidos. Faltam exercícios.
 
