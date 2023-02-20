@@ -7,3 +7,6 @@ O material está incompleto. Para além do que refiro abaixo, falta uma revisão
 3. Complexity theory: 70%. Sendo um capítulo mais de curiosidade, faltam exercícios.
 4. Integer Programming: 55%. Faltam bastantes imagens, descrição mais detalhada das heurísticas e meta-heurísticas. Explicação de B&B precisa de ser melhorada.
 5. Decomposition Methods: 60%. Não vou passar demasiado tempo aqui, mas especialmente Benders e B&P precisam de ser expandidos. Faltam exercícios.
+
+
+Faltam também algumas demonstrações, e poderei vir a remover alguns resultados que não são aplicados.
