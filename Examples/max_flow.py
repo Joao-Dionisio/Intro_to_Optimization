@@ -3,16 +3,16 @@ from pyscipopt import Model
 # data creation
 V = [0,1,2,3,4,5]
 s, t = V[0], V[-1] # source and target are first and last 
-E = {}
-E[s,1] = 2.3
-E[s,2] = 1.7
-E[1,3] = 1.2
-E[2,1] = 0.6
-E[2,4] = 1.9
-E[3,2] = 0.5
-E[3,4] = 1.2
-E[3,t] = 0.8
-E[4,t] = 2  
+C = {}
+C[s,1] = 2.3
+C[s,2] = 1.7
+C[1,3] = 1.2
+C[2,1] = 0.6
+C[2,4] = 1.9
+C[3,2] = 0.5
+C[3,4] = 1.2
+C[3,t] = 0.8
+C[4,t] = 2  
 
 N = {s:[1,2],1:[3],2:[1,4],3:[2,4,t],4:[t],t:[]} # set of destinations
 
@@ -20,8 +20,8 @@ N = {s:[1,2],1:[3],2:[1,4],3:[2,4,t],4:[t],t:[]} # set of destinations
 m = Model()             
 
 f = {}
-for u,v in E:
-    f[u,v] = m.addVar(lb=0,ub=E[u,v]) # flow variable with capacity
+for u,v in C:
+    f[u,v] = m.addVar(lb=0,ub=C[u,v]) # flow variable with capacity
 
 for v in V:
     if v == s or v == t:
@@ -44,7 +44,7 @@ try: # plot the result using networkx and matplotlib
     G = nx.DiGraph()
 
     G.add_nodes_from(V)
-    for (i,j) in E:
+    for (i,j) in C:
         G.add_edge(i,j,color="black")
 
     edges = G.edges()
@@ -61,8 +61,8 @@ try: # plot the result using networkx and matplotlib
     nx.draw(G,position,node_color="black",nodelist=V)
 
     edge_labels = {}
-    for (i,j) in E:
-        edge_labels[i,j] = E[i,j]
+    for (i,j) in C:
+        edge_labels[i,j] = C[i,j]
     nx.draw_networkx_edge_labels(G,position,edge_labels=edge_labels)
     
     node_labels ={}
@@ -78,8 +78,8 @@ try: # plot the result using networkx and matplotlib
     G = nx.DiGraph()
 
     G.add_nodes_from(V)
-    for (i,j) in E:
-        if round(m.getVal(f[i,j]),1) == E[i,j]:
+    for (i,j) in C:
+        if round(m.getVal(f[i,j]),1) == C[i,j]:
             G.add_edge(i,j,color="r",weight=5,label='a')
         else:
             G.add_edge(i,j,color="g", weight=2, label='a')
@@ -101,8 +101,8 @@ try: # plot the result using networkx and matplotlib
     nx.draw(G,position,node_color="black",nodelist=V, edge_color=colors, width=widths)
 
     edge_labels = {}
-    for (i,j) in E:
-        edge_labels[i,j] = "%.1f/%.1f"%(round(m.getVal(f[i,j]),1),E[i,j])
+    for (i,j) in C:
+        edge_labels[i,j] = "%.1f/%.1f"%(round(m.getVal(f[i,j]),1),C[i,j])
     nx.draw_networkx_edge_labels(G,position,edge_labels=edge_labels)
     
     node_labels ={}
