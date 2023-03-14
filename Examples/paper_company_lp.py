@@ -21,6 +21,17 @@ print([(i.name, m.getVal(i)) for i in m.getVars()]) # A SCIP variable has a name
                                                     # To get the value of a variable (variable A, for example) of model m, use m.getVal(A) 
                                                     # To get all the variables of model m, use m.getVars()
 
+
+
+
+
+
+
+
+
+
+
+
 ####################################
 """
 

@@ -10,3 +10,6 @@ O material está incompleto. Para além do que refiro abaixo, falta uma revisão
 
 
 Faltam também algumas demonstrações, e poderei vir a remover alguns resultados que não são aplicados.
+
+O foco agora está a ser nos slides. Diria que estão 75% prontos.
+Os exercícios estão nas lecture notes, no final de cada capítulo. Os exemplos também podem ser usados como exercícios.

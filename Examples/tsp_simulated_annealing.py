@@ -137,6 +137,14 @@ def swap_routes(state):
         state.insert(insert_pos, i)
     return state
 
+"""
+data.node_coords = {}
+for i in range(len(cities)):
+    for j in range(len(cities)):
+        print(i,j)
+        print(data.edge_weights)
+        data.node_coords[i] = (data.edge_weights[j][0]**2 + data.edge_weights[i][0]**2 - data.edge_weights[i][j]**2)/2
+"""
 
 best_route_distance = []
 best_route = []
@@ -149,15 +157,17 @@ for i in range(10):
     best_route.append(route)
     convergence_time.append(time_elapsed)
 
+print(best_route_distance)
+print(time_elapsed)
     #Plot Routes
-    xs = [data.node_coords[i][0] for i in route]
-    ys = [data.node_coords[i][1] for i in route]
+    #xs = [data.node_coords[i][0] for i in route]
+    #ys = [data.node_coords[i][1] for i in route]
 
-    plt.clf()
+    #plt.clf()
     # 'bo-' means blue color, round points, solid lines
-    plt.plot(xs,ys,'y--')
-    plt.xlabel('X Coordinates')
-    plt.ylabel('Y Coordinates')
+    #plt.plot(xs,ys,'y--')
+    #plt.xlabel('X Coordinates')
+    #plt.ylabel('Y Coordinates')
     
 import pandas as pd
 pd.DataFrame(best_route).to_csv('pr107_route_2.csv')

@@ -1,13 +1,15 @@
 
-# https://www.geeksforgeeks.org/traveling-salesman-problem-using-genetic-algorithm/
-from random import randint
+# Adapted from https://www.geeksforgeeks.org/traveling-salesman-problem-using-genetic-algorithm/
+
+from random import random, randint
  
-INT_MAX = 2147483647
+INT_MAX = 9999
 # Number of cities in TSP
-V = 5
+V = 10
  
 # Names of the cities
-GENES = "ABCDE"
+GENES = "ABCDEFGHIJ"
+GENES = GENES[:V]
  
 # Starting Node Value
 START = 0
@@ -15,15 +17,14 @@ START = 0
 # Initial population size for the algorithm
 POP_SIZE = 10
  
-# Structure of a GNOME
+# Structure of a GENOME
 # defines the path traversed
 # by the salesman while the fitness value
 # of the path is stored in an integer
  
- 
 class individual:
     def __init__(self) -> None:
-        self.gnome = ""
+        self.genome = ""
         self.fitness = 0
  
     def __lt__(self, other):
@@ -33,59 +34,43 @@ class individual:
         return self.fitness > other.fitness
  
  
-# Function to return a random number
-# from start and end
-def rand_num(start, end):
-    return randint(start, end-1)
- 
- 
-# Function to check if the character
-# has already occurred in the string
-def repeat(s, ch):
-    for i in range(len(s)):
-        if s[i] == ch:
-            return True
- 
-    return False
- 
- 
-# Function to return a mutated GNOME
-# Mutated GNOME is a string
+# Function to return a mutated GENOME
+# Mutated GENOME is a string
 # with a random interchange
 # of two genes to create variation in species
-def mutatedGene(gnome):
-    gnome = list(gnome)
+def mutatedGene(genome):
+    genome = list(genome)
     while True:
-        r = rand_num(1, V)
-        r1 = rand_num(1, V)
+        r = randint(1,V-1)
+        r1 = randint(1,V-1)
         if r1 != r:
-            temp = gnome[r]
-            gnome[r] = gnome[r1]
-            gnome[r1] = temp
+            temp = genome[r]
+            genome[r] = genome[r1]
+            genome[r1] = temp
             break
-    return ''.join(gnome)
+    return ''.join(genome)
  
  
-# Function to return a valid GNOME string
+# Function to return a valid GENOME string
 # required to create the population
-def create_gnome():
-    gnome = "0"
+def create_genome():
+    genome = "0"
     while True:
-        if len(gnome) == V:
-            gnome += gnome[0]
+        if len(genome) == V:
+            genome += genome[0]
             break
  
-        temp = rand_num(1, V)
-        if not repeat(gnome, chr(temp + 48)):
-            gnome += chr(temp + 48)
+        temp = randint(1,V-1)
+        if chr(temp + 48) not in genome:
+            genome += chr(temp + 48)
  
-    return gnome
+    return genome
  
  
-# Function to return the fitness value of a gnome.
+# Function to return the fitness value of a genome.
 # The fitness value is the path length
-# of the path represented by the GNOME.
-def cal_fitness(gnome):
+# of the path represented by the GENOME.
+def cal_fitness(genome):
     mp = [
         [0, 2, INT_MAX, 12, 5],
         [2, 0, 4, 8, INT_MAX],
@@ -93,11 +78,20 @@ def cal_fitness(gnome):
         [12, 8, 3, 0, 10],
         [5, INT_MAX, 3, 10, 0],
     ]
+    mp = {}
+    for i in range(V):
+        for j in range(V):
+            if random() > 0.1:
+                mp[i,j] = randint(1,100)
+            else: 
+                mp[i,j] = INT_MAX
+            mp[j,i] = mp[i,j]
+
     f = 0
-    for i in range(len(gnome) - 1):
-        if mp[ord(gnome[i]) - 48][ord(gnome[i + 1]) - 48] == INT_MAX:
+    for i in range(len(genome) - 1):
+        if mp[ord(genome[i]) - 48,ord(genome[i + 1]) - 48] == INT_MAX:
             return INT_MAX
-        f += mp[ord(gnome[i]) - 48][ord(gnome[i + 1]) - 48]
+        f += mp[ord(genome[i]) - 48,ord(genome[i + 1]) - 48]
  
     return f
  
@@ -108,7 +102,7 @@ def cooldown(temp):
     return (90 * temp) / 100
  
  
-# Comparator for GNOME struct.
+# Comparator for GENOME struct.
 # def lessthan(individual t1,
 #               individual t2)
 # :
@@ -120,23 +114,22 @@ def TSPUtil(mp):
     # Generation Number
     gen = 1
     # Number of Gene Iterations
-    gen_thres = 5
+    gen_thres = 10
  
     population = []
     temp = individual()
  
-    # Populating the GNOME pool.
+    # Populating the GENOME pool.
     for i in range(POP_SIZE):
-        temp.gnome = create_gnome()
-        temp.fitness = cal_fitness(temp.gnome)
+        temp.genome = create_genome()
+        temp.fitness = cal_fitness(temp.genome)
         population.append(temp)
  
-    print("\nInitial population: \nGNOME     FITNESS VALUE\n")
+    print("\nInitial population: \nGENOME     FITNESS VALUE\n")
     for i in range(POP_SIZE):
-        print(population[i].gnome, population[i].fitness)
+        print(population[i].genome, population[i].fitness)
     print()
  
-    found = False
     temperature = 10000
  
     # Iteration to perform
@@ -150,48 +143,51 @@ def TSPUtil(mp):
             p1 = population[i]
  
             while True:
-                new_g = mutatedGene(p1.gnome)
-                new_gnome = individual()
-                new_gnome.gnome = new_g
-                new_gnome.fitness = cal_fitness(new_gnome.gnome)
+                new_g = mutatedGene(p1.genome)
+                new_genome = individual()
+                new_genome.genome = new_g
+                new_genome.fitness = cal_fitness(new_genome.genome)
  
-                if new_gnome.fitness <= population[i].fitness:
-                    new_population.append(new_gnome)
+                if new_genome.fitness <= population[i].fitness:
+                    new_population.append(new_genome)
                     break
  
                 else:
- 
                     # Accepting the rejected children at
                     # a possible probability above threshold.
                     prob = pow(
                         2.7,
                         -1
                         * (
-                            (float)(new_gnome.fitness - population[i].fitness)
+                            (float)(new_genome.fitness - population[i].fitness)
                             / temperature
                         ),
                     )
                     if prob > 0.5:
-                        new_population.append(new_gnome)
+                        new_population.append(new_genome)
                         break
  
         temperature = cooldown(temperature)
         population = new_population
         print("Generation", gen)
-        print("GNOME     FITNESS VALUE")
+        print("GENOME     FITNESS VALUE")
  
+        total_fitness = 0
         for i in range(POP_SIZE):
-            print(population[i].gnome, population[i].fitness)
+            print(population[i].genome, population[i].fitness)
+            total_fitness += population[i].fitness
+        print("Mean fitness: %i" % (total_fitness/len(population)))
         gen += 1
  
  
 if __name__ == "__main__":
- 
-    mp = [
-        [0, 2, INT_MAX, 12, 5],
-        [2, 0, 4, 8, INT_MAX],
-        [INT_MAX, 4, 0, 3, 3],
-        [12, 8, 3, 0, 10],
-        [5, INT_MAX, 3, 10, 0],
-    ]
+
+    mp = {}
+    for i in range(V):
+        for j in range(V):
+            if random() > 0.1:
+                mp[i,j] = randint(1,100)
+            else: 
+                mp[i,j] = INT_MAX
+            mp[j,i] = mp[i,j]
     TSPUtil(mp)

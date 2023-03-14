@@ -7,14 +7,15 @@ https://www.researchgate.net/publication/242527226_Tabu_Search_A_Tutorial
 """
 import copy
 import math
+from random import random, randint
 
 
 def distance(point1, point2):
-    return math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
 
 def generate_neighbours(points):
-    """This function geenrates a 2D distance matrix between all points
+    """This function generates a 2D distance matrix between all points
     Parameters
     ----------
     points : type
@@ -150,3 +151,15 @@ def tabu_search(first_solution, distance_of_first_solution, dict_of_neighbours, 
         count = count + 1
     best_solution_ever.pop(-1)
     return best_solution_ever, best_cost
+
+
+if __name__ == "__main__":
+    V = 10
+    points = []
+    for i in range(V):
+        points.append((randint(1,30),randint(1,30)))
+
+    neighbours = generate_neighbours(points)
+    first_solution, solution_distance = generate_first_solution(points, neighbours)
+    tabu_search(first_solution=first_solution,distance_of_first_solution=solution_distance,dict_of_neighbours=neighbours,iters=10,size=5)
+    pass
